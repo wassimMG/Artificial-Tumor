@@ -28,24 +28,24 @@ int main()
     cout << "saisir le nombre de cellules" << endl;
     int nbrCellule = 0;
     cin >> nbrCellule;
-    cin.ignore(); // flasher le buffer d'entrée
+    cin.ignore(); // flasher le buffer d'entrÃ©e
     /*******************************/
 
 
     /*******************************
     Initialiser les cellules
-        - Les callules seront gardées dans un verteur de cellules
+        - Les callules seront gardÃ©es dans un verteur de cellules
     *******************************/
     //ToDo
-        // Déclaration du vecteur de cellules
+        // DÃ©claration du vecteur de cellules
         vector<Cellule> myvector;
         myvector.reserve(20);
 
-        // Initialisation des cellules une par une tout en les insérant dans le vecteur de cellules
+        // Initialisation des cellules une par une tout en les insÃ©rant dans le vecteur de cellules
         for (int i=1; i<=nbrCellule; i++)
     {
         cout << "vector is being loaded " << i <<endl;
-        srand (time(0)*i*11); // Astuce : utiliser la variable temps pour la fonction aléaoire
+        srand (time(0)*i*11); // Astuce : utiliser la variable temps pour la fonction alÃ©aoire
         cout << time(0)*i*11 << endl;
         Cellule nouvelle_cellule = Cellule(taille_max_cell,taux);
         myvector.push_back(nouvelle_cellule);
@@ -54,7 +54,7 @@ int main()
 
 
     /********************************
-    Initialiser le fichier de données qui seront représentées dans le graphe finale
+    Initialiser le fichier de donnÃ©es qui seront reprÃ©sentÃ©es dans le graphe finale
     *********************************/
         // open a file in write mode.
        fstream outfile;
@@ -73,20 +73,20 @@ int main()
     // Boucle de parcours du temps
     for (int t=1; t<=20; t++)
     {
-        cout << "itération n " << t << " dans le temps" << endl;
+        cout << "itÃ©ration n " << t << " dans le temps" << endl;
         // boucle de parcours du vecteur de cellules
         for (int j=1; j<=nbrCellule; j++)
         {
-            // Si la cellule n'est pas arrivée à l'age de division
+            // Si la cellule n'est pas arrivÃ©e Ã  l'age de division
             if (myvector[j].getAgeDiv() > myvector[j].getAge())
             {
-                // Alors agrandir la cellule selon le modèle
+                // Alors agrandir la cellule selon le modÃ¨le
                 myvector[j].agrradirCellule(taux,t/10);
             }
             // Sinon c'est la division
             else
             {
-                // créer deux cellules filles à partir de la cellule qui se divise
+                // crÃ©er deux cellules filles Ã  partir de la cellule qui se divise
                 Cellule cellule_fille_1 = Cellule(taille_max_cell,taux);
                 Cellule cellule_fille_2 = Cellule(taille_max_cell,taux,cellule_fille_1.getTailleInitCellule());
                 Cellule arrayinsert [] = { cellule_fille_1 , cellule_fille_2 };
@@ -94,7 +94,7 @@ int main()
                 //  inserer les deux nouvelles cellules dans le vecteur de cellules
                 myvector.insert (myvector.begin()+j, arrayinsert, arrayinsert+2);
 
-                // Effacer la cellule mère qui vient de se diviser
+                // Effacer la cellule mÃ¨re qui vient de se diviser
                 myvector.erase (myvector.begin()+j);
             }
             /**/
@@ -114,28 +114,15 @@ int main()
 
 
         /******************************
-        Enregistrer les données dans un fichier file.dat
+        Enregistrer les donnÃ©es dans un fichier file.dat
         *******************************/
-        fstream outfile; // déclarer un variable fichier
-        outfile.open("file.dat",ios::out|ios::app|ios::ate); // ouvrir le fichier en mode écriture et ne pas écraser les données existantes si elles existent
-        outfile << t << "...." << taille_totale << endl; // écrire dans le fichier file.dat la taille totale de la tumeur ainsi que le temps
+        fstream outfile; // dÃ©clarer un variable fichier
+        outfile.open("file.dat",ios::out|ios::app|ios::ate); // ouvrir le fichier en mode Ã©criture et ne pas Ã©craser les donnÃ©es existantes si elles existent
+        outfile << t << "...." << taille_totale << endl; // Ã©crire dans le fichier file.dat la taille totale de la tumeur ainsi que le temps
         outfile.close(); // fermer le fichier
         /*************************************
-        cout << '\n';
-        cout << '\n';
-        cout << '\n';
-        cout << "taille de la tumeur à l'instant t egal a " << t << endl;
-        // Afficher la taille de la tumeur à l'instant t
-        cout << taille_totale << endl;
-        // Afficher le nombre de cellule dans la tumeur à l'instant t
-        cout << "le nombre de cellules dans la tumeur a l'instant t egal a " << myvector.size() << endl;
-        // Afficher le nombre initial de cellule
-        cout << "RAPPEL : le nombre de cellules initiales est de : " << nbrCellule << endl;
 
-        cout << '\n';
-        cout << '\n';
-        cout << '\n';
-        ************************************/
+ 
 
     }
     /*******************************************************************************/
