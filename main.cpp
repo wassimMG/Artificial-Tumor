@@ -6,10 +6,11 @@
 #include <vector>
 #include <fstream>
 
-
 using namespace std;
 
-
+/******************************
+FONCTION PRINCIPALE : MAIN
+*******************************/
 int main()
 {
     /**************************
@@ -59,10 +60,15 @@ int main()
         // open a file in write mode.
        fstream outfile;
        outfile.open("file.dat",ios::out|ios::trunc|ios::ate);
-       outfile << "#X....Y" << endl;
+       outfile << "# X Y" << endl;
         // close the opened file.
        outfile.close();
 
+
+        fstream outfile1; // déclarer un variable fichier
+        outfile1.open("nbr_cellule.dat",ios::out|ios::trunc|ios::ate); // ouvrir le fichier en mode écriture et ne pas écraser les données existantes si elles existent
+        outfile1 << "# nbr_cellule" << endl; // écrire dans le fichier file.dat la taille totale de la tumeur ainsi que le temps
+        outfile1.close(); // fermer le fichier
 
     /*******************************
     Parcours dans le temps
@@ -118,14 +124,32 @@ int main()
         *******************************/
         fstream outfile; // déclarer un variable fichier
         outfile.open("file.dat",ios::out|ios::app|ios::ate); // ouvrir le fichier en mode écriture et ne pas écraser les données existantes si elles existent
-        outfile << t << "...." << taille_totale << endl; // écrire dans le fichier file.dat la taille totale de la tumeur ainsi que le temps
+        outfile << t << " " << taille_totale << endl; // écrire dans le fichier file.dat la taille totale de la tumeur ainsi que le temps
         outfile.close(); // fermer le fichier
-        /*************************************
 
- 
+        fstream outfile1; // déclarer un variable fichier
+        outfile1.open("nbr_cellule.dat",ios::out|ios::app|ios::ate); // ouvrir le fichier en mode écriture et ne pas écraser les données existantes si elles existent
+        outfile1 << t << " " << myvector.size() << endl; // écrire dans le fichier file.dat la taille totale de la tumeur ainsi que le temps
+        outfile1.close(); // fermer le fichier
+        /*************************************/
+
 
     }
     /*******************************************************************************/
+
+    /*************************************
+    Entrer le script de GNUPLOT dans un fichier
+    SCRIPT.DAT
+    ************************************/
+        //open a file in write mode.
+       fstream outfile2;
+       outfile2.open("script.dat",ios::out|ios::trunc|ios::ate);
+       outfile2 << "plot 'nbr_cellule.dat' using 1:2 with lines" << endl;
+        // close the opened file.
+       outfile2.close();
+
+        // Afficher le graphe de varation de la taille totale de la tumeur en fonction du temps
+       system("gnuplot -persist script.dat");
 
 
     return 0;
