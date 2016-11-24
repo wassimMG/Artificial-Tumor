@@ -1,0 +1,18 @@
+# depslib dependency file v1.0
+1479925391 source:e:\wassim\workspace\tumeur_artificielle\main.cpp
+	<iostream>
+	"cellule.h"
+	<cstdlib>
+	<ctime>
+	<math.h>
+	<vector>
+
+1479926352 e:\wassim\workspace\tumeur_artificielle\cellule.h
+
+1479933158 source:e:\wassim\workspace\tumeur_artificielle\cellule.cpp
+	<iostream>
+	"cellule.h"
+	<stdlib.h>
+	<ctime>
+	<math.h>
+
