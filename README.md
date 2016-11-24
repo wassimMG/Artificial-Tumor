@@ -1,2 +1,2 @@
 # Artificial-Tumor
-Simulate Artificia Tumor
+Simulate Artificial Tumor
