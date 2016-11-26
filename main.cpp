@@ -13,30 +13,32 @@ FONCTION PRINCIPALE : MAIN
 *******************************/
 int main()
 {
-    /**************************
+    /***************************************************
+    1----------------------------------------
     Initialiser la taille maximum de la cellule
     Initialiser la valeur de taux
-    ****************************/
-    // Pour le moment les deux variables sont fixes
-    float taille_max_cell = 0.02;
+    ***************************************************/
+    // Pour le moment les trois variables sont fixes
+    float taille_init_max_cell = 0.000099; // Lo_max (en mètre)
+    float taille_max_cell = 0.000198; // 2*taille_init_max_cell = 2*Lo_max = 2*99.10^(-6) = 198.10^(-6)
     float taux = 1;
-    /***************************/
 
 
-    /*****************************
+    /***************************************************
+    2----------------------------------------
     Initialiser le nombre ce cellules
-    ********************************/
+    ***************************************************/
     cout << "saisir le nombre de cellules" << endl;
     int nbrCellule = 0;
     cin >> nbrCellule;
     cin.ignore(); // flasher le buffer d'entrée
-    /*******************************/
 
 
-    /*******************************
+    /***************************************************
+    3----------------------------------------
     Initialiser les cellules
         - Les callules seront gardées dans un verteur de cellules
-    *******************************/
+    ***************************************************/
     //ToDo
         // Déclaration du vecteur de cellules
         vector<Cellule> myvector;
@@ -45,41 +47,41 @@ int main()
         // Initialisation des cellules une par une tout en les insérant dans le vecteur de cellules
         for (int i=1; i<=nbrCellule; i++)
     {
-        cout << "vector is being loaded " << i <<endl;
         srand (time(0)*i*11); // Astuce : utiliser la variable temps pour la fonction aléaoire
-        cout << time(0)*i*11 << endl;
         Cellule nouvelle_cellule = Cellule(taille_max_cell,taux);
         myvector.push_back(nouvelle_cellule);
     }
-    /*********************************/
 
 
-    /********************************
+    /***************************************************
+    4----------------------------------------
     Initialiser le fichier de données qui seront représentées dans le graphe finale
-    *********************************/
-        // open a file in write mode.
-       fstream outfile;
-       outfile.open("file.dat",ios::out|ios::trunc|ios::ate);
-       outfile << "# X Y" << endl;
-        // close the opened file.
-       outfile.close();
+    ***************************************************/
+       fstream outfile; // déclarer une variable fichier
+       outfile.open("2D_tumeur_fx_temps.dat",ios::out|ios::trunc|ios::ate); // ouvrir le fichier en mode écriture et ne pas écraser les données existantes si elles existent
+       outfile << "# tumeur en fct du temps" << endl;
+       outfile.close(); // fermer le fichier
 
-
-        fstream outfile1; // déclarer un variable fichier
-        outfile1.open("nbr_cellule.dat",ios::out|ios::trunc|ios::ate); // ouvrir le fichier en mode écriture et ne pas écraser les données existantes si elles existent
-        outfile1 << "# nbr_cellule" << endl; // écrire dans le fichier file.dat la taille totale de la tumeur ainsi que le temps
+        fstream outfile1; // déclarer une variable fichier
+        outfile1.open("2D_nbr_cellule_fx_temps.dat",ios::out|ios::trunc|ios::ate); // ouvrir le fichier en mode écriture et ne pas écraser les données existantes si elles existent
+        outfile1 << "# nbr_cellule en fct du temps" << endl; // écrire dans le fichier file.dat la taille totale de la tumeur ainsi que le temps
         outfile1.close(); // fermer le fichier
 
-    /*******************************
+        fstream outfile2; // déclarer une variable fichier
+        outfile2.open("3D_tumeur_fxy_nbr_cellule_fxy_temps.dat",ios::out|ios::trunc|ios::ate); // ouvrir le fichier en mode écriture et ne pas écraser les données existantes si elles existent
+        outfile2 << "# Longueur tumeur nbr_cellule temps" << endl; // écrire dans le fichier file.dat la taille totale de la tumeur ainsi que le temps
+        outfile2.close(); // fermer le fichier
+
+    /***************************************************
+    5----------------------------------------
     Parcours dans le temps
         Evolution des cellules au cours du temps
-    *******************************/
+    ***************************************************/
 
 
     // Boucle de parcours du temps
     for (int t=1; t<=20; t++)
     {
-        cout << "itération n " << t << " dans le temps" << endl;
         // boucle de parcours du vecteur de cellules
         for (int j=1; j<=nbrCellule; j++)
         {
@@ -107,46 +109,44 @@ int main()
         }
 
         float taille_totale = 0;
-        cout << "a l'instant  " << t  << endl;
-        cout << "myvector contains:";
         // boucle de parcours du vecteur des cellules
         for (int k=0; k<myvector.size(); k++)
         {
-            cout << ' ' << myvector[k].getTailleInitCellule();
-            cout << '\n';
             // Calucul de la taille totale de la tumeur
             taille_totale = taille_totale + myvector[k].getTailleActuCellule();
         }
 
 
-        /******************************
-        Enregistrer les données dans un fichier file.dat
-        *******************************/
-        fstream outfile; // déclarer un variable fichier
-        outfile.open("file.dat",ios::out|ios::app|ios::ate); // ouvrir le fichier en mode écriture et ne pas écraser les données existantes si elles existent
+        /***************************************************
+        6----------------------------------------
+        Enregistrer les données dans un fichier
+        ***************************************************/
+        outfile.open("2D_tumeur_fx_temps.dat",ios::out|ios::app|ios::ate); // ouvrir le fichier en mode écriture et ne pas écraser les données existantes si elles existent
         outfile << t << " " << taille_totale << endl; // écrire dans le fichier file.dat la taille totale de la tumeur ainsi que le temps
         outfile.close(); // fermer le fichier
 
-        fstream outfile1; // déclarer un variable fichier
-        outfile1.open("nbr_cellule.dat",ios::out|ios::app|ios::ate); // ouvrir le fichier en mode écriture et ne pas écraser les données existantes si elles existent
+        outfile1.open("2D_nbr_cellule_fx_temps.dat",ios::out|ios::app|ios::ate); // ouvrir le fichier en mode écriture et ne pas écraser les données existantes si elles existent
         outfile1 << t << " " << myvector.size() << endl; // écrire dans le fichier file.dat la taille totale de la tumeur ainsi que le temps
         outfile1.close(); // fermer le fichier
-        /*************************************/
+
+        outfile2.open("3D_tumeur_fxy_nbr_cellule_fxy_temps.dat",ios::out|ios::app|ios::ate); // ouvrir le fichier en mode écriture et ne pas écraser les données existantes si elles existent
+        outfile2 << t << " " << taille_totale << " " << myvector.size() << endl; // écrire dans le fichier file.dat la taille totale de la tumeur ainsi que le temps
+        outfile2.close(); // fermer le fichier
 
 
     }
-    /*******************************************************************************/
 
-    /*************************************
-    Entrer le script de GNUPLOT dans un fichier
-    SCRIPT.DAT
-    ************************************/
+
+    /***************************************************
+    7----------------------------------------
+    Entrer le script de GNUPLOT dans un fichier SCRIPT.DAT
+    ***************************************************/
         //open a file in write mode.
-       fstream outfile2;
-       outfile2.open("script.dat",ios::out|ios::trunc|ios::ate);
-       outfile2 << "plot 'nbr_cellule.dat' using 1:2 with lines" << endl;
+       fstream outfile3;
+       outfile3.open("script.dat",ios::out|ios::trunc|ios::ate);
+       outfile3 << "splot '3D_tumeur_fxy_nbr_cellule_fxy_temps.dat' with linespoints title 'variation de la tumeur' ;set xlabel 'temps' ;set ylabel 'metre'; set zlabel 'nbr_cellules'" << endl;
         // close the opened file.
-       outfile2.close();
+       outfile3.close();
 
         // Afficher le graphe de varation de la taille totale de la tumeur en fonction du temps
        system("gnuplot -persist script.dat");

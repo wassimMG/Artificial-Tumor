@@ -32,6 +32,10 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="SimpleRNG.cpp" />
+		<Unit filename="SimpleRNG.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
 		<Unit filename="cellule.cpp" />
 		<Unit filename="cellule.h" />
 		<Unit filename="main.cpp" />

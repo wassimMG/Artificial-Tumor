@@ -1,1 +1,1 @@
-plot 'nbr_cellule.dat' using 1:2 with lines
+splot '3D_tumeur_fxy_nbr_cellule_fxy_temps.dat' with linespoints title 'variation de la tumeur' ;set xlabel 'temps' ;set ylabel 'metre'; set zlabel 'nbr_cellules'

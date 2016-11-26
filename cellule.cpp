@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <ctime>
 #include <math.h>
+#include "SimpleRNG.h"
 
 using namespace std;
 
@@ -38,82 +39,95 @@ float Cellule::getAgeDiv()
 
  Cellule::Cellule(float v_taille_max, float v_taux)
  {
-     /**ToDo - passer taille_max en parametre*/
-     //float taille_max = 0.02;
 
-     /**ToDo - passer taux en paramètres*/
-     //int taux = 1;
-
-    /** initialiser l'age de la cellule à zéro*/
+    /***************************************************
+     1-------------------------------------------------
+     Initialiser l'age de la cellule à zéro
+     ***************************************************/
      m_age = 0;
 
     /***************************************************
-    //Initialiser la taille de la cellule : valeure aléatoire
-    /***************************************************/
-    //cout << "Initialiser la taille de la cellule : valeure aléatoire" << endl;
-    //srand (time(0)); // initialiser la fonction random
-    float rand_value = 1+(rand() % 100); // choisir un nombre aléatoire entre 1 et 100
-    //cout << rand_value << endl;
-    m_taille_init = rand_value/10000; // m_taille_init est une valeure aléatoire entre 10^(-4) et 10^(-2)
-    //cout << m_taille_init << endl;
-    /***************************************************/
+    2-------------------------------------------------
+    Initialiser la taille de la cellule : valeure aléatoire
+    ***************************************************/
+    SimpleRNG var1 = SimpleRNG();
+    int ecart_type = time(NULL) % 10; // l'écart type reçoit une valeur semi-aléatoire en fonction du temps du système entre 0 et 99
+    int moyenne = 50; // la moyenne qui va être utlisée dans la loi normale
+    float var_normal = round(var1.GetNormal(moyenne,ecart_type));
 
+    while ((var_normal < 1) && (var_normal >99))
+    {
+        var_normal = round(var1.GetNormal(moyenne,ecart_type)); // générer un nombre aléatoire selon la loi normale de moyenne 50 et d'écart type égal à une valeur aléatoire entre 1 et 10
+    }
+    m_taille_init = var_normal * 0.0000001; // La taille initiale de la cellule est une valeur aléatoire entre 1.10^(-6) et 99.10^(-6) en mètre
 
-    m_taille_actu = m_taille_init; // au moment de création de la cellule la taille actuelle est égale à la taille initiale
 
     /***************************************************
-    // Calculer l'age de division de la cellule
-    // En fonction de la taille initiale de la cellule
-    // Et tenant compte la taille maximum qu'une cellule
-    // peut atteindre avant de se diviser par mitose
-    // Dans ce calcul le résultat sera arrondi au dixième
-    // afin de pouvoir utiliser après la valeur
+    3-------------------------------------------------
+    La taille actuelle de la cellule est égale à
+    la taille initiale au moment de création
+    ***************************************************/
+    m_taille_actu = m_taille_init; //
+
+    /***************************************************
+    4-------------------------------------------------
+    Calculer l'age de division de la cellule
+    En fonction de la taille initiale de la cellule
+    Et tenant compte la taille maximum qu'une cellule
+    peut atteindre avant de se diviser par mitose
+    Dans ce calcul le résultat sera arrondi au dixième
+    afin de pouvoir utiliser après la valeur
     ***************************************************/
     if (m_taille_init!=0)
     {
         /** calcul de la valeure réelle de l'age de la cellule après lequel elle va se diviser */
         float age_div_reel = v_taux*log(v_taille_max/m_taille_init);
-        //cout << "calcul de la valeure réelle de l'age de la cellule après lequel elle va se diviser" << endl;
-        //cout << age_div_reel << endl;
+       // cout << age_div_reel << endl;
        /** valeur finale arrondie au dixième près */
         m_age_division = round(age_div_reel*10)/10;
-        //cout << " valeur finale arrondie au dixième près" << endl;
-        //cout << m_age_division << endl;
     }
  }
 
 
  Cellule::Cellule(float v_taille_max, float v_taux, float v_taille_init_soeur)
  {
-     /** initialiser l'age de la cellule à zéro*/
+    /***************************************************
+     1-------------------------------------------------
+     Initialiser l'age de la cellule à zéro
+     ***************************************************/
      m_age = 0;
 
+
     /***************************************************
-    //Initialiser la taille de la cellule : taille de la cellule mère moins la taille de la soeur
-    /***************************************************/
+    2-------------------------------------------------
+    Initialiser la taille de la cellule
+    ***************************************************/
     m_taille_init = v_taille_max - v_taille_init_soeur;
 
 
+    /***************************************************
+    3-------------------------------------------------
+    La taille actuelle de la cellule est égale à
+    la taille initiale au moment de création
+    ***************************************************/
     m_taille_actu = m_taille_init; // au moment de création de la cellule la taille actuelle est égale à la taille initiale
 
     /***************************************************
-    // Calculer l'age de division de la cellule
-    // En fonction de la taille initiale de la cellule
-    // Et tenant compte la taille maximum qu'une cellule
-    // peut atteindre avant de se diviser par mitose
-    // Dans ce calcul le résultat sera arrondi au dixième
-    // afin de pouvoir utiliser après la valeur
+    4-------------------------------------------------
+    Calculer l'age de division de la cellule
+    En fonction de la taille initiale de la cellule
+    Et tenant compte la taille maximum qu'une cellule
+    peut atteindre avant de se diviser par mitose
+    Dans ce calcul le résultat sera arrondi au dixième
+    afin de pouvoir utiliser après la valeur
     ***************************************************/
     if (m_taille_init!=0)
     {
         /** calcul de la valeure réelle de l'age de la cellule après lequel elle va se diviser */
         float age_div_reel = v_taux*log(v_taille_max/m_taille_init);
-        //cout << "calcul de la valeure réelle de l'age de la cellule après lequel elle va se diviser" << endl;
-        cout << age_div_reel << endl;
+        //cout << age_div_reel << endl;
        /** valeur finale arrondie au dixième près */
         m_age_division = round(age_div_reel*10)/10;
-        //cout << " valeur finale arrondie au dixième près" << endl;
-        //cout << m_age_division << endl;
     }
  }
 
